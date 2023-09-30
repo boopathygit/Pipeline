@@ -4,8 +4,8 @@ pipeline {
         booleanParam(name: 'autoapprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
     environment {
-        AWS_ACCESS_KEY_ID   = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY   = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_ACCESS_KEY_ID      = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY  = credentials('AWS_SECRET_ACCESS_KEY')
     }
    
    agent any
@@ -15,7 +15,7 @@ pipeline {
                script{
                      dir("terraform")
                      {
-                       gir "git pathhhhhhhhhhhhhhhhhhhhhhhh"
+                       git "https://github.com/boopathygit/TerraJenk.git "
                      }
                } 
           }
@@ -23,9 +23,9 @@ pipeline {
        
        stage('Plan') {
           steps {
-              sh 'pwd;,cd terraform/ ; terraform init'
-              sh 'pwd;,cd terraform/ ; terraform plan -ot tfplan'
-              sh 'pwd;,cd terraform/ ; terraform show -no-color tfplan > tfplan
+              sh 'pwd;cd terraform/ ; terraform init'
+              sh 'pwd;cd terraform/ ; terraform plan -out tfplan'
+              sh 'pwd;cd terraform/ ; terraform show -no-color tfplan > tfplan
 .txt'
           }
        } 
