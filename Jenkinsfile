@@ -1,6 +1,6 @@
 pipeline {
 
-    Parameters {
+    parameters {
         booleanParam(name: 'autoapprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
     environment {
@@ -40,7 +40,7 @@ pipeline {
           script {
               def plan = readFile 'terraform/tfplan.txt'
               input message: "Do you want to apply the plan?",
-              Parameters: [text(name: 'Plan', description: 'Please review the plan', defaultVaule: plan)]
+              parameters: [text(name: 'Plan', description: 'Please review the plan', defaultVaule: plan)]
           }
        }  
 
