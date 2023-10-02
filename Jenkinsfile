@@ -43,7 +43,6 @@ pipeline {
               Parameters: [text(name: 'Plan', description: 'Please review the plan', defaultVaule: plan)]
           }
        }  
-    }
 
     stage('Apply') {
        steps {
