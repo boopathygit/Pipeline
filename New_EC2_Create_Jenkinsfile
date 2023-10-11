@@ -1,0 +1,27 @@
+pipeline{
+    agent any
+    tools {
+        terraform 'terraform'
+    }
+    stages{
+        stage('Git Checker'){
+            steps{
+               git branch: 'main', url: 'https://github.com/boopathygit/Pipeline.git'           
+            }
+        }
+        stage('Terraform init'){
+            steps{
+                sh 'terraform init'
+            }
+        }
+        stage('Terraform Plan'){
+            steps{
+                sh 'terraform plan'
+            }
+        }
+        stage('Terraform Apply'){
+            steps{
+                sh 'terraform apply --auto-approve'
+            }
+        }
+ }
