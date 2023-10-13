@@ -1,1 +1,10 @@
-f
+pipeline {
+   agent any
+    stages {
+       stage('Execute Ansible Playbook') {
+          steps {
+               ansiblePlaybook credentialsId: 'JenkinsforAnsiblw', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: '/etc/ansible/deployApp.yml'   
+          }
+       } 
+    }
+}     
