@@ -53,7 +53,7 @@ pipeline {
         steps{
            sh 'terraform output > /tmp/file.txt'
         }
--   }
+    }
     stage('Email Notification') {
        steps {
                 emailext(attachLog: true, body: 'This is the Status of Build Result got Success', subject: 'Linux Build Status ', to: 'boopathy.natarajan@hcl.com')
