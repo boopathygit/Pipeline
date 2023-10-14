@@ -54,8 +54,6 @@ pipeline {
            sshagent(credentials:['JenkinsforAnsiblw']){
            sh "pwd;cd terraform/ ; terraform output > /tmp/file.txt"
            sh "cat /tmp/file.txt | grep -i pvt | awk '{print \$3}'|sed 's/\"//g' > /etc/ansible/hosts"
-           //sh "echo 'sudo cat /tmp/hostpvtip >> /etc/ansible/hosts' > /tmp/tesh.sh"
-           //sh "/tmp/test.sh"
            }
      echo "--------Copying file into host file of ansible directory--------"
         }
