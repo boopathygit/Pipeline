@@ -51,7 +51,7 @@ pipeline {
     }
     stage('Output of Terraform'){
         steps{
-           sh 'terraform output > /tmp/file.txt
+           sh 'terraform output > /tmp/file.txt'
         }
 -   }
     stage('Email Notification') {
