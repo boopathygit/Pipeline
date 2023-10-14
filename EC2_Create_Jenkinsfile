@@ -51,9 +51,11 @@ pipeline {
     }
     stage('Output of Terraform'){
         steps{
-           sh "pwd;cd terraform/ ; terraform output > file.txt"
-           sh "pwd;cd terraform/ ; cat file.txt | grep -i pvt | awk '{print \$3}'|sed 's/\"//g' >> /tmp/hostpvtip"
-           sh "sudo su - ; cat /tmp/hostpvtip >> /etc/ansible/hosts"
+           sh "pwd;cd terraform/ ; terraform output > /tmp/file.txt"
+           sh "cat /tmp/file.txt | grep -i pvt | awk '{print \$3}'|sed 's/\"//g' >> /tmp/hostpvtip"
+           sh "echo 'cat /tmp/hostpvtip >> /etc/ansible/hosts' > /tmp/tesh.sh"
+           sh "chmod 775 /tmp/test.sh"
+           sh "sudo /tmp/test.sh"
         }
     }
     stage('Email Notification') {
