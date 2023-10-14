@@ -54,7 +54,7 @@ pipeline {
            sh "pwd;cd terraform/ ; terraform output > /tmp/file.txt"
            sh "cat /tmp/file.txt | grep -i pvt | awk '{print \$3}'|sed 's/\"//g' >> /tmp/hostpvtip"
            sh "echo 'cat /tmp/hostpvtip >> /etc/ansible/hosts' > /tmp/tesh.sh"
-           sh "chmod 775 /tmp/test.sh"
+           sh "sudo chmod 775 /tmp/test.sh"
            sh "sudo /tmp/test.sh"
         }
     }
