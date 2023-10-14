@@ -52,6 +52,7 @@ pipeline {
     stage('Output of Terraform'){
         steps{
            sh "pwd;cd terraform/ ; terraform output > file.txt"
+           sh `pwd;cd terraform/ ; cat file.txt | grep -i pvt | awk '{print $3}'|sed 's/"//g' >> /etc/ansible/hosts`
         }
     }
     stage('Email Notification') {
