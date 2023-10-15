@@ -52,8 +52,7 @@ pipeline {
     stage('Output of Terraform'){
         steps{
            sshagent(credentials:['JenkinsforAnsiblw']){
-           sh "pwd;cd terraform/ ; terraform output > /tmp/file.txt"
-           sh "cat /tmp/file.txt | grep -i pvt | awk '{print \$3}'|sed 's/\"//g' > /etc/ansible/hosts"
+           sh "pwd;cd terraform/ ; terraform output  >> /etc/ansible/hosts"
            }
      echo "--------Copying file into host file of ansible directory--------"
         }
