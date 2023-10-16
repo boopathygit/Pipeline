@@ -57,8 +57,13 @@ pipeline {
            sh "sudo chmod 644 /etc/ansible/hosts"
         }
     }
+    stage('Tigeer Ansible_Jenkin'){
+        steps { 
+               build 'Ansible_Jenkin'
+        }
+    }
     stage('Email Notification') {
-       steps {
+        steps {
                 emailext(attachLog: true, body: 'This is the Status of Build Result got Success', subject: 'Linux Build Status ', to: 'boopathy.natarajan@hcl.com')
        }  
     }
