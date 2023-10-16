@@ -6,7 +6,7 @@ pipeline{
     stages{
         stage('Git Checker'){
             steps{
-               git branch: 'main', url: 'https://github.com/boopathygit/Pipeline.git'           
+               git branch: 'main', url: 'https://github.com/boopathygit/Terraform.git        
             }
         }
         stage('Terraform init'){
