@@ -59,7 +59,7 @@ pipeline {
     }
     stage('Tigeer Ansible_Jenkin'){
         steps { 
-               build 'Ansible_Jenkin'
+               build 'Ansible_pipeline'
         }
     }
     stage('Email Notification') {
