@@ -1,0 +1,19 @@
+pipeline {
+   agent any
+    stages {
+       stage('checkout') {
+          steps {
+               script{
+                     dir("AnsibleD")
+                     {
+                       git branch: 'main', url: 'https://github.com/boopathygit/Terraform.git'
+                     }
+               } 
+          }
+       stage('Execute Ansible Playbook') {
+          steps {
+             sh  "ansiblePlaybook credentialsId: 'JenkinsforAnsiblw', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: '/etc/ansible/deployApp.yml'"
+          }
+       } 
+    }
+}
