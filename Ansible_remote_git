@@ -3,12 +3,7 @@ pipeline {
     stages {
        stage('Git checkout') {
           steps {
-               script{
-                     dir("AnsibleD")
-                     {
-                       git branch: 'main', url: 'https://github.com/boopathygit/Ansible.git'
-                     }
-               } 
+               git branch: 'main', url: 'https://github.com/boopathygit/Ansible.git'
           }
        }
        stage('Execute Ansible Playbook') {
