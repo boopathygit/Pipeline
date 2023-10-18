@@ -13,7 +13,7 @@ pipeline {
        }
        stage('Execute Ansible Playbook') {
           steps {
-             sh  "ansiblePlaybook credentialsId: 'JenkinsforAnsiblw', disableHostKeyChecking: true, installation: 'ansible', inventory: 'hosts', playbook: 'User_Create.yml'"
+             sh  "ansible-playbook credentialsId: 'JenkinsforAnsiblw', disableHostKeyChecking: true, installation: 'ansible', inventory: 'hosts', playbook: 'User_Create.yml'"
           }
        } 
     }
