@@ -1,7 +1,7 @@
 pipeline {
    agent any
     stages {
-       stage('checkout') {
+       stage('Git checkout') {
           steps {
                script{
                      dir("AnsibleD")
@@ -13,7 +13,7 @@ pipeline {
        }
        stage('Execute Ansible Playbook') {
           steps {
-             sh  "ansible-playbook credentialsId: 'JenkinsforAnsiblw', disableHostKeyChecking: true, installation: 'ansible', inventory: 'hosts', playbook: 'User_Create.yml'"
+             sh  "ansible-playbook User_Create.yml
           }
        } 
     }
