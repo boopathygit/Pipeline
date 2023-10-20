@@ -13,7 +13,7 @@ pipeline {
        stage('checkout') {
           steps {
                script{
-                     dir("terraform")
+                     dir("terraformwithvars")
                      {
                        git branch: 'main', url: 'https://github.com/boopathygit/Terraform.git'
                      }
