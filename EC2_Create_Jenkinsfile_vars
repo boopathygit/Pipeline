@@ -23,9 +23,9 @@ pipeline {
        
        stage('Plan') {
           steps {
-              sh 'pwd;cd terraform/ ; terraform init'
-              sh 'pwd;cd terraform/ ; terraform plan -out tfplan'
-              sh 'pwd;cd terraform/ ; terraform show -no-color tfplan > tfplan.txt'
+              sh 'pwd;cd terraform/terraformwithvars ; terraform init'
+              sh 'pwd;cd terraform/terraformwithvars ; terraform plan -out tfplan'
+              sh 'pwd;cd terraform/terraformwithvars ; terraform show -no-color tfplan > tfplan.txt'
           }
        } 
        stage('Approval') {
@@ -46,12 +46,12 @@ pipeline {
     
     stage('Apply') {
        steps {
-          sh "pwd;cd terraform/ ; terraform apply -input=true tfplan"
+          sh "pwd;cd terraform/terraformwithvars ; terraform apply -input=true tfplan"
        }
     }
     stage('Output of Terraform'){
         steps{
-           sh "pwd;cd terraform/ ; terraform output  > /tmp/file.txt"
+           sh "pwd;cd terraform/terraformwithvars ; terraform output  > /tmp/file.txt"
            sh "sudo chmod 666 /etc/ansible/hosts"
            sh "sudo cat /tmp/file.txt | grep -i pvt | awk '{print \$3}'|sed 's/\"//g' > /etc/ansible/hosts"
            sh "sudo chmod 644 /etc/ansible/hosts"
