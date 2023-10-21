@@ -21,7 +21,7 @@ pipeline {
        stage('Plan') {
           steps {
               sh 'pwd;cd terraform/terraformwithvars ; terraform init'
-              sh 'pwd;cd terraform/terraformwithvars ; terraform plan -out tfplan'
+              sh 'pwd;cd terraform/terraformwithvars ; terraform plan -out tfplan -var "my_instance_type=${my_instance_type}"'
               sh 'pwd;cd terraform/terraformwithvars ; terraform show -no-color tfplan > tfplan.txt'
           }
        } 
