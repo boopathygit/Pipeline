@@ -21,26 +21,11 @@ pipeline {
        stage('Plan') {
           steps {
               sh 'pwd;cd terraform/terraformwithvars ; terraform init'
-              sh 'pwd;cd terraform/terraformwithvars ; terraform plan -out tfplan -var "my_instance_type=${my_instance_type}"'
+              sh 'pwd;cd terraform/terraformwithvars ; terraform plan -out tfplan -var "instance_type=${my_instance_type}"'
               sh 'pwd;cd terraform/terraformwithvars ; terraform show -no-color tfplan > tfplan.txt'
           }
        } 
-       stage('Approval') {
-          when {
-             not {
-                 equals expected: false, actual: params.autoApprove
-             }
-          }
-       
-          steps {
-             script {
-                 def plan = readFile 'terraform/tfplan.txt'
-                 input message: "Do you want to apply the plan?",
-                 parameters: [text(name: 'Plan', description: 'Please review the plan', defaultVaule: plan)]
-             }
-          }
-       }
-    
+      
     stage('Apply') {
        steps {
           sh "pwd;cd terraform/terraformwithvars ; terraform apply -input=true tfplan"
