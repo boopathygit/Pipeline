@@ -28,7 +28,7 @@ pipeline {
       
     stage('Apply') {
        steps {
-          sh 'pwd;cd terraform/terraformwithvars ; terraform apply -input=true tfplan -var "my_instance_type=${MY_instance_type}"'
+          sh "pwd;cd terraform/terraformwithvars ; terraform apply -input=true tfplan -var 'my_instance_type=${MY_instance_type}'"
        }
     }
     stage('Output of Terraform'){
