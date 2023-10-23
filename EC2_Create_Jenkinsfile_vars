@@ -21,14 +21,14 @@ pipeline {
        stage('Plan') {
           steps {
               sh 'pwd;cd terraform/terraformwithvars ; terraform init'
-              sh 'pwd;cd terraform/terraformwithvars ; terraform plan -out tfplan -var "my_instance_type=${Instance_Type}"'
+              sh 'pwd;cd terraform/terraformwithvars ; terraform plan -out tfplan -var "my_instance_type=${Instance_Type}, my_ami=${AMI}"'
               sh 'pwd;cd terraform/terraformwithvars ; terraform show -no-color tfplan > tfplan.txt'
           }
        } 
       
     stage('Apply') {
        steps {
-          sh "pwd;cd terraform/terraformwithvars ; terraform apply -auto-approve '-var=my_instance_type=${Instance_Type}'"
+          sh "pwd;cd terraform/terraformwithvars ; terraform apply -auto-approve '-var=my_instance_type=${Instance_Type}, my_ami=${AMI}'"
        }
     }
     stage('Output of Terraform'){
