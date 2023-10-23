@@ -1,0 +1,53 @@
+pipeline {
+
+    environment {
+        AWS_ACCESS_KEY_ID      = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY  = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+   
+   agent any
+    stages {
+       stage('checkout') {
+          steps {
+               script{
+                     dir("terraform")
+                     {
+                       git branch: 'main', url: 'https://github.com/boopathygit/Terraform.git'
+                     }
+               } 
+          }
+       }     
+       
+       stage('Plan') {
+          steps {
+              sh 'pwd;cd terraform/terraformwithvars ; terraform init'
+              sh 'pwd;cd terraform/terraformwithvars ; terraform plan -out tfplan -var "my_instance_type=${Instance_Type}"'
+              sh 'pwd;cd terraform/terraformwithvars ; terraform show -no-color tfplan > tfplan.txt'
+          }
+       } 
+      
+    stage('Apply') {
+       steps {
+          sh "pwd;cd terraform/terraformwithvars ; terraform apply -auto-approve '-var=my_instance_type=${Instance_Type}'"
+       }
+    }
+    stage('Output of Terraform'){
+        steps{
+           sh "pwd;cd terraform/terraformwithvars ; terraform output  > /tmp/file.txt"
+           sh "sudo chmod 666 /etc/ansible/hosts"
+           sh "sudo cat /tmp/file.txt | grep -i pvt | awk '{print \$3}'|sed 's/\"//g' > /etc/ansible/hosts"
+           sh "sudo chmod 644 /etc/ansible/hosts"
+        }
+    }
+    stage('Tigeer Ansible_Jenkin'){
+        steps { 
+               build 'Ansible_pipeline'
+        }
+    }
+    stage('Email Notification') {
+        steps {
+                emailext(attachLog: true, body: 'This is the Status of Build Result got Success', subject: 'Linux Build Status ', to: 'boopathy.natarajan@hcl.com')
+       }  
+    }
+  }
+}
