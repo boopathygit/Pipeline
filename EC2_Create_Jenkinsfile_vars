@@ -18,18 +18,18 @@ pipeline {
           }
        }     
        
-       stage('Init') {
+       stage('Terraform init') {
           steps {
               sh 'pwd;cd terraform/terraformwithvars ; terraform init'
           }
        } 
 
-        stage('Plan') {
+        stage('Terraform plan') {
           steps {
-              sh 'pwd;cd terraform/terraformwithvars ; terraform plan -auto-approve -var-file terraform.tfvars'
+              sh 'pwd;cd terraform/terraformwithvars ; terraform plan -var-file terraform.tfvars'
           }
        }
-    stage('Apply') {
+    stage('Terraform apply') {
        steps {
           sh "pwd;cd terraform/terraformwithvars ; terraform apply -auto-approve '-var-file terraform.tfvars'"
        }
