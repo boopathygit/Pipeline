@@ -44,12 +44,17 @@ pipeline {
            sh "sudo chmod 644 /etc/ansible/hosts"
         }
     }
-    stage('Tigeer Ansible_Jenkin'){
+    stage('Installing HTTPD - Ansible'){
         steps { 
                build 'Ansible_pipeline'
         }
     }
-    stage('Email Notification') {
+    stage('User Creation - Ansible') {
+        steps {
+               ansiblePlaybook credentialsId: 'JenkinsforAnsiblw', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: '/etc/ansible/deployApp.yml'   
+        }
+    } 
+    stage('Build Status Email Notification') {
         steps {
                 emailext(attachLog: true, body: 'This is the Status of Build Result got Success', subject: 'Linux Build Status ', to: 'boopathy.natarajan@hcl.com')
        }  
