@@ -51,7 +51,7 @@ pipeline {
     }
     stage('User Creation - Ansible') {
         steps {
-               ansiblePlaybook credentialsId: 'JenkinsforAnsiblw', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: '/etc/ansible/UserCreate.yml', extras: "-e Auser=${Auser} -e Agroup=Aautomation"
+               ansiblePlaybook credentialsId: 'JenkinsforAnsiblw', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: '/etc/ansible/UserCreate.yml', extras: "-e Auser=${Ans_user} -e Agroup=Aautomation"
         }
     } 
     stage('Build Status Email Notification') {
