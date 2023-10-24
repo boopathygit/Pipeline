@@ -7,7 +7,7 @@ pipeline {
    
    agent any
     stages {
-       stage('git_checkout') {
+       stage('Git_Repo_checkout') {
           steps {
                script{
                      dir("terraform")
@@ -36,7 +36,7 @@ pipeline {
 '-var=my_ami=${AMI}'"
        }
     }
-    stage('Output of Terraform'){
+    stage('Collect IP details'){
         steps{
            sh "pwd;cd terraform/terraformwithvars ; terraform output  > /tmp/file.txt"
            sh "sudo chmod 666 /etc/ansible/hosts"
