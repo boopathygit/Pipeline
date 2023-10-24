@@ -26,14 +26,14 @@ pipeline {
 
         stage('Terraform plan') {
           steps {
-              sh "pwd;cd terraform/terraformwithvars ; terraform plan '-var=my_instance_type=${Instance_Type}
--var=my_ami=${AMI}'"
+              sh "pwd;cd terraform/terraformwithvars ; terraform plan '-var=my_instance_type=${Instance_Type}' \
+'-var=my_ami=${AMI}'"
           }
        }
     stage('Terraform apply') {
        steps {
-          sh "pwd;cd terraform/terraformwithvars ; terraform apply -auto-approve '-var=my_instance_type=${Instance_Type}
--var=my_ami=${AMI}'"
+          sh "pwd;cd terraform/terraformwithvars ; terraform apply -auto-approve '-var=my_instance_type=${Instance_Type}' \
+'-var=my_ami=${AMI}'"
        }
     }
     stage('Output of Terraform'){
