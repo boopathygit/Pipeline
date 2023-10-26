@@ -1,4 +1,7 @@
 pipeline {
+  parameters {
+        choiceParam(name: 'choice', choices: 1 2 3, description: 'Chose 1 / 2 / 3 ?')
+  }
   agent any
     stages {
       stage('1 choice') {
