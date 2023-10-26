@@ -4,26 +4,26 @@ pipeline {
       stage('1 choice') {
         when {
              expression { choice == '1'}
-             }
+        }
         steps {
               echo "Hello 1 selected"
-              }
-       }        
+        }
+      }        
       stage('2 choice') {
         when {
              expression { choice == '2'}
-             }
+        }
         steps {
               echo "Hello 2 selected"
-              }
-       }       
+        }
+      }        
       stage('3 choice') {
         when {
              expression { choice == '3'}
-             }
+        }
         steps {
               echo "Hello 3 selected"
-              }
-       }        
-     }  
-}
+        }
+      }        
+    }
+}  
