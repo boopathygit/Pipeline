@@ -53,12 +53,12 @@ pipeline {
         steps{
            sh "pwd;cd terraform/terraformwithvars ; terraform output  > /tmp/file.txt"
            sh "sudo cat /tmp/file.txt | grep -i pvt | awk '{print \$3}'|sed 's/\"//g' > /tmp/anshost"
-           sh "scp /tmp/anshost root@ansible:/tmp"
+           sh "scp -o StrictHostKeyChecking=no /tmp/anshost root@ansible:/tmp"
         }
     }
     stage('Tigeer Ansible_Jenkin'){
         steps {
-           sh "ssh root@ansible 'ansible-playbook -i /tmp/anshost /etc/ansible/UserCreate.yml'"
+           sh "ssh -o StrictHostKeyChecking=no root@ansible 'ansible-playbook -i /tmp/anshost /etc/ansible/UserCreate.yml'"
         }
     }
     stage('Email Notification') {
