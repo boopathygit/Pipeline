@@ -58,7 +58,7 @@ pipeline {
     }
     stage('Tigeer Ansible_Jenkin'){
         steps {
-           sh "ssh root@ansible "ansible-playbook -i /tmp/anshost /etc/ansible/UserCreate.yml"
+           sh "ssh root@ansible 'ansible-playbook -i /tmp/anshost /etc/ansible/UserCreate.yml'"
         }
     }
     stage('Email Notification') {
