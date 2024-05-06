@@ -52,13 +52,13 @@ pipeline {
     stage('Output of Terraform'){
         steps{
            sh "pwd;cd terraform/ ; terraform output  > /tmp/file.txt"
-           sh "sudo cat /tmp/file.txt | grep -i pvt | awk '{print \$3}'|sed 's/\"//g' > /tmp/anshost"
+           sh "sudo cat /tmp/file.txt | grep -i pub | awk '{print \$3}'|sed 's/\"//g' > /tmp/anshost"
            sh "scp -o StrictHostKeyChecking=no /tmp/anshost root@ansible:/tmp"
         }
     }
     stage('Tigeer Ansible_Jenkin'){
         steps {
-           sh "ssh -o StrictHostKeyChecking=no root@ansible 'ansible-playbook -i /tmp/anshost /etc/ansible/UserCreate.yml'"
+           sh "ssh -o StrictHostKeyChecking=no root@ansible 'ansible-playbook -i /tmp/anshost /etc/ansible/UserCreate.yml -u ec2-user --private-key /tmp/maternew.pem'"
         }
     }
     stage('Email Notification') {
