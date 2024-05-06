@@ -1,0 +1,70 @@
+pipeline {
+
+    parameters {
+        booleanParam(name: 'autoapprove', defaultValue: true, description: 'Automatically run apply after generating plan?')
+    }
+    environment {
+        AWS_ACCESS_KEY_ID      = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY  = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+   
+   agent any
+    stages {
+       stage('checkout') {
+          steps {
+               script{
+                     dir("terraform")
+                     {
+                       git branch: 'main', url: 'https://github.com/boopathygit/Terraform.git'
+                     }
+               } 
+          }
+       }     
+       
+       stage('Plan') {
+          steps {
+              sh 'pwd;cd terraform/ ; terraform init'
+              sh 'pwd;cd terraform/ ; terraform plan -out tfplan'
+              sh 'pwd;cd terraform/ ; terraform show -no-color tfplan > tfplan.txt'
+          }
+       } 
+       stage('Approval') {
+          when {
+             not {
+                 equals expected: false, actual: params.autoApprove
+             }
+          }
+       
+          steps {
+             script {
+                 def plan = readFile 'terraform/tfplan.txt'
+                 input message: "Do you want to apply the plan?",
+                 parameters: [text(name: 'Plan', description: 'Please review the plan', defaultVaule: plan)]
+             }
+          }
+       }
+    
+    stage('Apply') {
+       steps {
+          sh "pwd;cd terraform/ ; terraform apply -input=true tfplan"
+       }
+    }
+    stage('Output of Terraform'){
+        steps{
+           sh "pwd;cd terraform/terraformwithvars ; terraform output  > /tmp/file.txt"
+           sh "sudo cat /tmp/file.txt | grep -i pvt | awk '{print \$3}'|sed 's/\"//g' > /tmp/anshost"
+           sh "scp /tmp/anshost root@ansible:/tmp"
+        }
+    }
+    stage('Tigeer Ansible_Jenkin'){
+        steps {
+           sh "ssh root@ansible "ansible-playbook -i /tmp/anshost /etc/ansible/UserCreate.yml"
+        }
+    }
+    stage('Email Notification') {
+        steps {
+                emailext(attachLog: true, body: 'This is the Status of Build Result got Success', subject: 'Linux Build Status ', to: 'boopathy.natarajan@hcl.com')
+       }  
+    }
+  }
+}
