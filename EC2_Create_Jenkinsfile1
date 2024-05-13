@@ -63,7 +63,7 @@ pipeline {
     }
     stage('Email Notification') {
         steps {
-                emailext(attachLog: true, body: 'This is the Status of Build Result got Success', subject: 'Linux Build Status ', to: 'boopathy.natarajan@hcl.com')
+                emailext(attachLog: true, body: 'This is the Status of Build Result got Success', subject: 'Linux Build Status ', to: 'boopathy_cmc@rediffmail.com')
        }  
     }
   }
