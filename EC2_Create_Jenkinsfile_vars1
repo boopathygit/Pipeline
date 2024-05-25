@@ -1,0 +1,57 @@
+pipeline {
+
+    environment {
+        AWS_ACCESS_KEY_ID      = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY  = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+   
+   agent any
+    stages {
+       stage('Git_Repo_checkout') {
+          steps {
+               script{
+                     dir("terraform")
+                     {
+                       git branch: 'main', url: 'https://github.com/boopathygit/Terraform.git'
+                     }
+               } 
+          }
+       }     
+       
+       stage('Terraform init') {
+          steps {
+              sh 'pwd;cd terraform/terraformwithvars ; terraform init'
+          }
+       } 
+
+        stage('Terraform plan') {
+          steps {
+              sh "pwd;cd terraform/terraformwithvars ; terraform plan '-var=my_instance_type=${Instance_Type}' \
+'-var=my_ami=${AMI}'"
+          }
+       }
+    stage('Terraform apply') {
+       steps {
+          sh "pwd;cd terraform/terraformwithvars ; terraform apply -auto-approve '-var=my_instance_type=${Instance_Type}' \
+'-var=my_ami=${AMI}'"
+       }
+    }
+    stage('Collect IP details'){
+        steps{
+           sh "pwd;cd terraform/terraformwithvars ; terraform output  > /tmp/file.txt"
+           sh "sudo cat /tmp/file.txt | grep -i pub | awk '{print \$3}'|sed 's/\"//g' > /tmp/anshost"
+           sh "scp -o StrictHostKeyChecking=no /tmp/anshost root@ansible:/tmp"
+        }
+    }
+    stage('User Creation - Ansible') {
+        steps {
+               sh "ssh -o StrictHostKeyChecking=no root@ansible 'ansible-playbook -i /tmp/anshost /etc/ansible/UserCreate.yml -u ec2-user --private-key /etc/ansible/maternew.pem -e Auser=${Ans_user} -e Agroup=Aautomation'"
+        }
+    } 
+    stage('Build Status Email Notification') {
+        steps {
+                 emailext(attachLog: true, body: 'This is the Status of Build Result got Success', subject: 'Linux Build Status ', to: 'boopathy_cmc@rediffmail.com')
+       }  
+    }
+  }
+}
