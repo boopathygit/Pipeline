@@ -58,7 +58,7 @@ pipeline {
     }
     stage('Tigeer Ansible_Jenkin'){
         steps {
-           sh "ssh -o StrictHostKeyChecking=no root@ansible 'ansible-playbook -i /tmp/anshost /etc/ansible/UserCreate.yml -u ec2-user --private-key /etc/ansible/maternew.pem'"
+           sh "ssh -o StrictHostKeyChecking=no root@ansible 'ansible-playbook -i /tmp/anshost /etc/ansible/UserCreate1.yml -u ec2-user --private-key /etc/ansible/maternew.pem'"
         }
     }
     stage('Email Notification') {
