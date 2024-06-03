@@ -45,7 +45,7 @@ pipeline {
     }
     stage('User Creation - Ansible') {
         steps {
-               'curl -s -k -X POST --user *** -H "content-type: application/json" http://ansible:32286/api/v2/job_templates/9/launch/  -d '{"limit":$pub_ip,"extra_vars": {"Auser":"Janu","Agroup":Aautomation"}}' | jq '.job'
+               'curl -s -k -X POST --user *** -H "content-type: application/json" http://ansible:32286/api/v2/job_templates/9/launch/  -d '{"limit":"","extra_vars": {"Auser":"Janu","Agroup":Aautomation"}}' | jq '.job'
         }
     } 
     stage('Build Status Email Notification') {
